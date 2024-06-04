@@ -218,13 +218,13 @@ void  mystl::SingleLinkedList<T>::createLoop(int pos)
 template<typename T>
 bool mystl::SingleLinkedList<T>::hasLoop() const
 {
-    Node* slow = head;
-    Node* fast = head;
-    while(slow && fast && fast -> next)
+    Node* ptr1 = head;
+    Node* ptr2 = head;
+    while(ptr1 && ptr2 && ptr2 -> next)
     {
-        slow = slow -> next;
-        fast = fast -> next -> next;
-        if(slow == fast)
+        ptr1 = ptr1 -> next;
+        ptr2 = ptr2 -> next -> next;
+        if(ptr1 == ptr2)
         {
             return true;
         }
