@@ -218,19 +218,16 @@ void  mystl::SingleLinkedList<T>::createLoop(int pos)
 template<typename T>
 bool mystl::SingleLinkedList<T>::hasLoop() const
 {
-    Node* tmp = head;
-    std::vector<Node*> detected;
-    while(tmp != nullptr)
+    Node* slow = head;
+    Node* fast = head;
+    while(slow && fast && fast -> next)
     {
-        for(int i = 0 ; i < detected.size() ; i++)
+        slow = slow -> next;
+        fast = fast -> next -> next;
+        if(slow == fast)
         {
-            if(tmp == detected[i])
-            {
-                return true;
-            }
+            return true;
         }
-        detected.push_back(tmp);
-        tmp = tmp -> next;
     }
     return false;
 }
