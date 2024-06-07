@@ -186,6 +186,7 @@ void mystl::SingleLinkedList<T>::print() const
         tmp = tmp -> next;
     }
     std::cout << std::endl;
+    printed.clear();
     return;
 }
 
@@ -250,6 +251,7 @@ void mystl::SingleLinkedList<T>::reverseList()
         tmp = tmp -> next;
     }
     tmp -> next = nullptr;
+    nodes.clear();
     return;
 }
 
@@ -300,5 +302,6 @@ mystl::SingleLinkedList<T>::~SingleLinkedList()
         tmp = nullptr;
         head = head -> next;
     }
+    deleted.clear();
 }
 #endif //LIST_H
