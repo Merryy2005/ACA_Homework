@@ -256,26 +256,21 @@ void mystl::SingleLinkedList<T>::reverseList()
 template<typename T>
 T mystl::SingleLinkedList<T>::findElem(int n) const
 {
-    int size = 0;
-    Node* tmp = head;
-    while(tmp != nullptr)
+    Node* tmp1 = head;
+    Node* tmp2 = head;
+    for(int i = 0 ; i <= n ; i++)
     {
-        tmp = tmp -> next;
-        size++;
+        if(tmp2 == nullptr)
+        {
+            std::cout << "List size is smaller than the element" << std::endl;
+            return T();
+        }
+        tmp2 = tmp2 -> next;
     }
-    if(size < n)
+    while(tmp2 != nullptr)
     {
-        throw std::runtime_error("List size is smaller than the element");
-    }
-    n = size - n - 1;
-    int ind = -1;
-    tmp = head;
-    Node* tmp1 = nullptr;
-    while(tmp != nullptr && ind < n)
-    {
-        tmp1 = tmp;
-        tmp = tmp -> next;
-        ind++;
+        tmp1 = tmp1 -> next;
+        tmp2 = tmp2 -> next;
     }
     return tmp1 -> val;
 }

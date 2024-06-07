@@ -22,7 +22,7 @@ int main()
     list.reverseList();
     std::cout << "Reversed List : " << std::endl;
     list.print();
-    std::cout << list.findElem(4) << std::endl;
+    std::cout << list.findElem(3) << std::endl;
     list.createLoop(2);
     list.print();
     std::cout << (list.hasLoop() ? "List has loop" : "List doesn't have loop") << std::endl;
