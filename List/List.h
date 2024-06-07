@@ -215,6 +215,7 @@ void mystl::List<T>::print() const
         tmp = tmp -> next;
     }
     std::cout << std::endl;
+    printed.clear();
     return;
 }
 
