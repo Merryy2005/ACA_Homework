@@ -15,9 +15,20 @@ int main()
     nums[8] = "eight";
     nums[9] = "nine";
     nums[10] = "ten";
-    std::cout << "Enter a number between 1 and 10" << std::endl;
-    int n;
-    std::cin >> n;
-    std::cout << n << " is " << nums[n] << std::endl;
+    int n = 0;
+    while(n == 0)
+    {
+        std::cout << "Enter a number between 1 and 10" << std::endl;
+        std::cin >> n;
+        if(n <= 0 || n > 10)
+        {
+            n = 0;
+            std::cout << "Wrong number, try again" << std::endl;
+        }
+        else
+        {
+            std::cout << n << " is " << nums[n] << std::endl;
+        }
+    }
     return 0;
 }
