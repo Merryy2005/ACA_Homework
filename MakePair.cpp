@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 #include <utility>
 
 template<typename T1 , typename T2>
@@ -9,7 +10,7 @@ std::pair<std::decay_t<T1> , std::decay_t<T2>> make_pair(T1&& first , T2&& secon
 
 int main()
 {
-    std::pair<int , double> p = make_pair(2 , 10.1);
+    std::pair<int , std::string> p = make_pair(2 , "hello");
     std::cout << p.first << " " << p.second << std::endl;
     return 0;
 }
