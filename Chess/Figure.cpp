@@ -1,55 +1,53 @@
 #include "Figure.h"
 
-Figure::Figure() : m_color("white") , m_isActive(false) , m_col('A') , m_row(1) , m_point(0) , m_create(true) , m_name("")
+Figure::Figure() : m_color(Color::white) , m_isActive(false) , m_col(Column::A) , m_row(Row::R1), m_col1(m_col) , m_row1(m_row) , m_create(true) , m_name(Name::king) , m_wasHere(new bool*[8])
 {
-
+    for(int i = 0 ; i < 8 ; i++)
+    {
+        m_wasHere[i] = new bool[8];
+    }
+    for(int i = 0 ; i < 8 ; i++)
+    {
+        for(int j = 0 ; j < 8 ; j++)
+        {
+            m_wasHere[i][j] = false;
+        }
+    }
+    m_wasHere[(int)m_row][(int)m_col] = true;
 }
 
-Figure::Figure(std::string color , bool isActive , char col , int row) : 
-               m_color(color) , m_isActive(isActive) , m_col(col) , m_row(row) , m_point(0) , m_create(true) , m_name("")
+Figure::Figure(Color color , bool isActive , Column col , Row row) : 
+               m_color(color) , m_isActive(isActive) , m_col(col) , m_row(row) , m_col1(m_col) , m_row1(m_row) , m_create(true) , m_name(Name::king) , m_wasHere(new bool*[8])
 {
-    if(m_color != "white" && m_color != "black")
+    for(int i = 0 ; i < 8 ; i++)
     {
-        m_create = false;
-        std::cout << "Couldn't create figure , wrong color" << std::endl;
+        m_wasHere[i] = new bool[8];
     }
-    if(!(m_col >= 'A' && m_col <= 'H'))
+    for(int i = 0 ; i < 8 ; i++)
     {
-        m_create = false;
-        std::cout << "Couldn't create figure , wrong column" << std::endl;
+        for(int j = 0 ; j < 8 ; j++)
+        {
+            m_wasHere[i][j] = false;
+        }
     }
-    if(!(m_row >= 1 && m_row <= 8))
-    {
-        m_create = false;
-        std::cout << "Couldn't create figure , wrong row" << std::endl;
-    }
-}
-
-Figure::Figure(std::string color , bool isActive , char col , int row , int point) : 
-               m_color(color) , m_isActive(isActive) , m_col(col) , m_row(row) , m_point(point) , m_create(true) , m_name("")
-{
-    if(m_color != "white" && m_color != "black")
-    {
-        m_create = false;
-        std::cout << "Couldn't create figure , wrong color" << std::endl;
-    }
-    if(!(m_col >= 'A' && m_col <= 'H'))
-    {
-        m_create = false;
-        std::cout << "Couldn't create figure , wrong column" << std::endl;
-    }
-    if(!(m_row >= 1 && m_row <= 8))
-    {
-        m_create = false;
-        std::cout << "Couldn't create figure , wrong row" << std::endl;
-    }
+    m_wasHere[(int)m_row][(int)m_col] = true;
 }
 
 Figure::Figure(const Figure& other) : 
                m_color(other.m_color) , m_isActive(other.m_isActive) , m_col(other.m_col) , 
-               m_row(other.m_row) , m_create(other.m_create) , m_name(other.m_name)
+               m_row(other.m_row) , m_col1(other.m_col1) , m_row1(other.m_row1) , m_create(other.m_create) , m_name(other.m_name) , m_wasHere(new bool*[8])
 {
-
+    for(int i = 0 ; i < 8 ; i++)
+    {
+        m_wasHere[i] = new bool[8];
+    }
+    for(int i = 0 ; i < 8 ; i++)
+    {
+        for(int j = 0 ; j < 8 ; j++)
+        {
+            m_wasHere[i][j] = other.m_wasHere[i][j];
+        }
+    }
 }
 
 bool Figure::isCreated() const
@@ -57,22 +55,22 @@ bool Figure::isCreated() const
     return m_create;
 }
 
-std::string Figure::getName() const
+Figure::Name Figure::getName() const
 {
     return m_name;
 }
 
-char Figure::getCol() const
+Figure::Column Figure::getCol() const
 {
     return m_col;
 }
 
-int Figure::getRow() const
+Figure::Row Figure::getRow() const
 {
     return m_row;
 }
 
-std::string Figure::getColor() const
+Figure::Color Figure::getColor() const
 {
     return m_color;
 }
@@ -82,46 +80,64 @@ bool Figure::getState() const
     return m_isActive;
 }
 
-int Figure::getPoint() const
+void Figure::setCol(Column col)
 {
-    return m_point;
+    m_col = col;
 }
 
-
-void Figure::setCol(char col)
+void Figure::setRow(Row row)
 {
-    if(col >= 'A' && col <= 'H')
-    {
-        m_col = col;
-    }
-    else
-    {
-        std::cout << "Wrong column , try again" << std::endl;
-    }
+    m_row = row;
 }
 
-void Figure::setRow(int row)
-{
-    if(row >= 1 && row <= 8)
-    {
-        m_row = row;
-    }
-    else
-    {
-        std::cout << "Wrong row , try again" << std::endl;
-    }
-}
-
-void Figure::printParameters() const
+void Figure::printParameters() const 
 {
     printName();
-    std::cout << "Color : " << m_color << std::endl;
-    std::cout << "Point : " << m_point << std::endl;
-    std:: cout << "Status : " << (m_isActive ? "Active" : "Not Active") << std::endl;
-    std::cout << "Position : " << m_col << m_row << std::endl;
+    std::cout << "Color: " << (m_color == Color::white ? "white" : "black") << std::endl;
+    std::cout << "Status: " << (m_isActive ? "Active" : "Not Active") << std::endl;
+    std::cout << "Position: " << char('A' + (int)m_col) << " " << (int)m_row + 1 << std::endl;
 }
+
+void Figure::printName() const
+{
+    switch (m_name)
+    {
+        case Name::king:
+            std::cout << (m_color == Color::white ? "K" : BLUE "K" RESET);
+            break;
+        case Name::queen:
+            std::cout << (m_color == Color::white ? "Q" : BLUE "Q" RESET);
+            break;
+        case Name::bishop:
+            std::cout << (m_color == Color::white ? "B" : BLUE "B" RESET);
+            break;
+        case Name::knight:
+            std::cout << (m_color == Color::white ? "N" : BLUE "N" RESET);
+            break;
+        case Name::rook:
+            std::cout << (m_color == Color::white ? "R" : BLUE "R" RESET);
+            break;
+        case Name::pawn:
+            std::cout << (m_color == Color::white ? "P" : BLUE "P" RESET);
+            break;
+        default:
+            break;
+    }
+}
+
 
 Figure::~Figure()
 {
-
+    for(int i = 0 ; i < 8 ; i++)
+    {
+        delete[] m_wasHere[i];
+    }
+    delete[] m_wasHere;
+    m_wasHere = nullptr;
+    // for(int i = 0 ; i < 8 ; i++)
+    // {
+    //     delete[] m_wasHere1[i];
+    // }
+    // delete[] m_wasHere1;
+    // m_wasHere1 = nullptr;
 }

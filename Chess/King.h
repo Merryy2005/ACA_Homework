@@ -11,10 +11,10 @@ class King : public Figure
 {
     public:
         King();
-        King(std::string, bool, char, int);
+        King(Color, bool, Column, Row);
         King(const King&);
-        bool isAttack(char , int , const Board&) const override;
-        void printName() const override;
+        bool isAttack(Column , Row , const Board&) const override;
+        bool nextMove(const Board&) override;
         ~King();
         friend class Board;
 

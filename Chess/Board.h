@@ -4,6 +4,12 @@
 #include <iostream>
 #include "Matrix.h"
 #include "Figure.h"
+#include "King.h"
+#include "Queen.h"
+#include "Bishop.h"
+#include "Rook.h"
+#include "Knight.h"
+#include "Pawn.h"
 
 // 0 - black , 1 - white
 
@@ -11,6 +17,12 @@
 #define CYAN    "\033[36m"
 
 class Figure;
+class King;
+class Queen;
+class Bishop;
+class Rook;
+class Knight;
+class Pawn;
 
 class Board : public Matrix
 {
@@ -18,9 +30,12 @@ class Board : public Matrix
         Figure*** m_figures;
     public:
         Board();
-        bool isNeighbour(int , int , int , int) const;
+        Board(const Board&);
+        bool isNeighbour(Figure::Column, Figure::Row, Figure::Column, Figure::Row) const;
         bool registerFigure(Figure*);
         void printBoard();
+        Figure::Column getBlackCol() const;
+        Figure::Row getBlackRow() const;
         ~Board();
         friend class King;
         friend class Queen;

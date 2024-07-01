@@ -8,10 +8,10 @@ class Pawn : public Figure
 {
     public:
         Pawn();
-        Pawn(std::string, bool, char, int);
+        Pawn(Color, bool, Column, Row);
         Pawn(const Pawn&);
-        bool isAttack(char , int , const Board&) const override;
-        void printName() const override;
+        bool isAttack(Column , Row , const Board&) const override;
+        bool nextMove(const Board&) override;
         ~Pawn();
         friend class Board;
 };

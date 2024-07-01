@@ -1,27 +1,27 @@
 #include "King.h"
 
-King::King() : Figure("white", false, 'E', 1)
+King::King() : Figure(Color::white, false, Column::E, Row::R1)
 {
-    m_name = "K";
+    m_name = Name::king;
 }
 
-King::King(std::string color , bool isActive , char col , int row) : 
+King::King(Color color, bool isActive, Column col, Row row) : 
             Figure(color , isActive , col , row)
 {
-    m_name = "K";
+    m_name = Name::king;
 }
 
 King::King(const King& other) : Figure(other)
 {
-    m_name = "K";
+    m_name = Name::king;
 }
 
-bool King::isAttack(char col, int row , const Board& b) const
+bool King::isAttack(Column col, Row row , const Board& b) const
 {
-    int col1 = m_col - 'A';
-    int row1 = m_row - 1;
-    int col2 = col - 'A';
-    int row2 = row - 1;
+    int col1 = (int)m_col;
+    int row1 = (int)m_row;
+    int col2 = (int)col;
+    int row2 = (int)row;
     if(col1 == col2 && row1 == row2)
     {
         return false;
@@ -33,18 +33,41 @@ bool King::isAttack(char col, int row , const Board& b) const
     return false;
 }
 
-void King::printName() const
+bool King::nextMove(const Board& b)
 {
-    if(m_color == "black")
+    int colInt = (int)m_col;
+    int rowInt = (int)m_row;
+    for(int i = 0 ; i < 8 ; i++)
     {
-        std::cout << BLUE << "K" << RESET;
+        for(int j = 0 ; j < 8 ; j++)
+        {
+                if(std::abs(rowInt - i) <= 1 && std::abs(colInt - j) <= 1)
+                {
+                    for(int i1 = 0 ; i1 < 8 ; i1++)
+                    {
+                        for(int j1 = 0 ; j1 < 8 ; j1++)
+                        {
+                            if(!(i1 == rowInt && j1 == colInt) && std::abs(i1 - i) <= 1 && std::abs(j1 - j) <= 1 && b.m_figures[i1][j1] && b.m_figures[i1][j1]->getName() == Figure::Name::king)
+                            {
+                                m_wasHere[i][j] = true;
+                                break;
+                            }
+                        }
+                    }
+                    if(!m_wasHere[i][j])
+                    {
+                        m_wasHere[i][j] = true;
+                        m_col1 = (Figure::Column)j;
+                        m_row1 = (Figure::Row)i;
+                        return true;
+                    }
+                }
+        }
     }
-    else{
-        std:: cout << "K";
-    }
+    return false;
 }
 
 King::~King()
 {
-
+    
 }

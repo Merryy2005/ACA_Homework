@@ -1,37 +1,27 @@
 #include "Pawn.h"
 
-Pawn::Pawn() : Figure("white", false, 'A', 2 , 1)
+Pawn::Pawn() : Figure(Color::white, false, Column::A, Row::R2)
 {
-    m_name = "P";
+    m_name = Name::pawn;
 }
 
-Pawn::Pawn(std::string color , bool isActive , char col , int row) : 
-            Figure(color , isActive , col , row , 3)
+Pawn::Pawn(Color color, bool isActive, Column col, Row row) :  
+            Figure(color , isActive , col , row)
 {
-    if(m_color == "white" && row == 1)
-    {
-        m_create = false;
-        std::cout << "White pawn can't be here" << std::endl;
-    }
-    if(m_color == "black" && row == 8)
-    {
-        m_create = false;
-        std::cout << "Black pawn can't be here" << std::endl;
-    }
-    m_name = "P";
+    m_name = Name::pawn;
 }
 
 Pawn::Pawn(const Pawn& other) : Figure(other)
 {
-    m_name = "P";
+    m_name = Name::pawn;
 }
 
-bool Pawn::isAttack(char col, int row , const Board& b) const
+bool Pawn::isAttack(Column col, Row row , const Board& b) const
 {
-    int col1 = m_col - 'A';
-    int row1 = m_row - 1;
-    int col2 = col - 'A';
-    int row2 = row - 1;
+    int col1 = (int)m_col;
+    int row1 = (int)m_row;
+    int col2 = (int)col;
+    int row2 = (int)row;
     if(col1 == col2 && row1 == row2)
     {
         return false;
@@ -43,9 +33,32 @@ bool Pawn::isAttack(char col, int row , const Board& b) const
     return false;
 }
 
-void Pawn::printName() const
+bool Pawn::nextMove(const Board& b)
 {
-    std:: cout << "P";
+    int colInt = (int)m_col;
+    int rowInt = (int)m_row;
+    rowInt++;
+    if(colInt - 1 >= 0)
+    { 
+        if(!m_wasHere[rowInt][colInt-1])
+        {
+            m_wasHere[rowInt][colInt-1] = true;
+            m_col1 = (Figure::Column)(colInt - 1);
+            m_row1 = (Figure::Row)rowInt;
+            return true;
+        }
+    }
+    if(colInt + 1 < 8)
+    {
+        if(!m_wasHere[rowInt][colInt+1])
+        {
+            m_wasHere[rowInt][colInt+1] = true;
+            m_col1 = (Figure::Column)(colInt + 1);
+            m_row1 = (Figure::Row)rowInt;
+            return true;
+        }
+    }
+    return false;
 }
 
 Pawn::~Pawn()

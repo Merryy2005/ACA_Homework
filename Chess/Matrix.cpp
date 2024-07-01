@@ -1,20 +1,20 @@
 #include "Matrix.h"
 
-Matrix::Matrix() : m_ptr(nullptr) , m_row(0) , m_col(0)
+Matrix::Matrix() : m_row(0) , m_col(0) , m_ptr(nullptr)
 {
 
 }
 
-Matrix::Matrix(int row , int col) : m_row(row) , m_col(col) , m_ptr(new int*[row])
+Matrix::Matrix(int row , int col) : m_row(row) , m_col(col) , m_ptr(new Color*[row])
 {
     for(int i = 0 ; i < m_row ; i++){
-        m_ptr[i] = new int[m_col];
+        m_ptr[i] = new Color[m_col];
     }
     for(int i = 0 ; i < m_row ; i++)
     {
         for(int j = 0 ; j < m_col ; j++)
         {
-            m_ptr[i][j] = 0;
+            m_ptr[i][j] = Color::black;
         }
     }
 
@@ -26,7 +26,7 @@ void Matrix::printMatrix()
     {
         for(int j = 0 ; j < m_col ; j++)
         {
-            std::cout << m_ptr[i][j] <<" ";
+            std::cout << (int)m_ptr[i][j] <<" ";
         }
         std::cout << std::endl;
     }

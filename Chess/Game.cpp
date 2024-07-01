@@ -1,96 +1,225 @@
 #include "Game.h"
 
-bool Game::isAttack(int col , int row) const
+Game::Game() : Board()
+{
+
+}
+
+Game::Game(const Game& other) : Board(other)
+{
+
+}
+
+bool Game::isAttack(Figure::Column col , Figure::Row row) const
 {
     bool check = false;
     for(int i = 0 ; i < m_row ; i++)
     {
         for(int j = 0 ; j < m_col ; j++)
         {
-            if(m_figures[i][j] && m_figures[i][j]->getColor() == "black")
+            if(m_figures[i][j] && m_figures[i][j]->getColor() == Figure::Color::black)
             {
                 continue;
             }
             else if(m_figures[i][j])
             {
-                check |= m_figures[i][j] -> isAttack(col + 'A' , row + 1 , *this);
+                check |= m_figures[i][j] -> isAttack(col , row , *this);
             }
         }
     }
     return check;
-}
-
-int Game::getBlackCol() const
-{
-    for(int i = 0 ; i < m_row ; i++)
-    {
-        for(int j = 0 ; j < m_col ; j++)
-        {
-            if(m_figures[i][j] && m_figures[i][j]->getColor() == "black" && m_figures[i][j] -> getName() == "K")
-            {
-                return j;
-            }
-        }
-    }
-    return -1;
-}
-
-int Game::getBlackRow() const
-{
-    for(int i = 0 ; i < m_row ; i++)
-    {
-        for(int j = 0 ; j < m_col ; j++)
-        {
-            if(m_figures[i][j] && m_figures[i][j]->getColor() == "black" && m_figures[i][j] -> getName() == "K")
-            {
-                return i;
-            }
-        }
-    }
-    return -1;
 }
 
 bool Game::isCheckmate() const
 {
-    int col = getBlackCol();
-    int row = getBlackRow();
-    if(col == -1 || row == -1)
+    Figure::Column col = getBlackCol();
+    Figure::Row row = getBlackRow();
+    bool check = true;
+    check &= isAttack(col ,row);
+    int colInt = (int)col;
+    int rowInt = (int)row;
+    if (colInt - 1 >= 0) 
+    {
+        check &= isAttack((Figure::Column)(colInt - 1), row);
+    }
+    if (colInt - 1 >= 0 && rowInt - 1 >= 0) 
+    {
+        check &= isAttack((Figure::Column)(colInt - 1), (Figure::Row)(rowInt - 1));
+    }
+    if (colInt - 1 >= 0 && rowInt + 1 < 8) 
+    {
+        check &= isAttack((Figure::Column)(colInt - 1), (Figure::Row)(rowInt + 1));
+    }
+    if (rowInt - 1 >= 0) 
+    {
+        check &= isAttack(col, (Figure::Row)(rowInt - 1));
+    }
+    if (rowInt + 1 < 8) 
+    {
+        check &= isAttack(col, (Figure::Row)(rowInt + 1));
+    }
+    if (colInt + 1 < 8 && rowInt - 1 >= 0) 
+    {
+        check &= isAttack((Figure::Column)(colInt + 1), (Figure::Row)(rowInt - 1));
+    }
+    if (colInt + 1 < 8) 
+    {
+        check &= isAttack((Figure::Column)(colInt + 1), row);
+    }
+    if (colInt + 1 < 8 && rowInt + 1 < 8) 
+    {
+        check &= isAttack((Figure::Column)(colInt + 1), (Figure::Row)(rowInt + 1));
+    }
+    return check;
+}
+
+bool Game::isCheckmateOneStep(bool print) const
+{
+    if(isCheckmate()) return false;
+    if(isAttack(getBlackCol() , getBlackRow()))
     {
         return false;
     }
-    bool check = true;
-    check &= isAttack(col ,row);
-    if(col - 1 >= 0)
+    for(int i = 0 ; i < 8 ; i++)
     {
-        check &= isAttack(col-1 , row);
+        for(int j = 0 ; j < 8 ; j++)
+        {
+            if(m_figures[i][j] && m_figures[i][j]->getColor() == Figure::Color::white)
+            {
+                while(m_figures[i][j] -> nextMove(*this))
+                {
+                    Game newGame(*this);
+                    newGame.m_figures[i][j] = nullptr;
+                    int i1 = (int)m_figures[i][j] -> m_row1;
+                    int j1 = (int)m_figures[i][j] -> m_col1;
+                    switch(m_figures[i][j]->m_name)
+                    {
+                        case Figure::Name::king:
+                            newGame.m_figures[i1][j1] = new King(*((King*)(m_figures[i][j])));
+                            break;
+                        case Figure::Name::queen:
+                            newGame.m_figures[i1][j1] = new Queen(*((Queen*)(m_figures[i][j])));
+                            break;
+                        case Figure::Name::bishop:
+                            newGame.m_figures[i1][j1] = new Bishop(*((Bishop*)(m_figures[i][j])));
+                            break;
+                        case Figure::Name::rook:
+                            newGame.m_figures[i1][j1] = new Rook(*((Rook*)(m_figures[i][j])));
+                            break;
+                        case Figure::Name::knight:
+                            newGame.m_figures[i1][j1] = new Knight(*((Knight*)(m_figures[i][j])));
+                            break;
+                        case Figure::Name::pawn:
+                            newGame.m_figures[i1][j1] = new Pawn(*((Pawn*)(m_figures[i][j])));
+                            break;
+                    }
+                    newGame.m_figures[i1][j1] -> setCol(m_figures[i][j] -> m_col1);
+                    newGame.m_figures[i1][j1] -> setRow(m_figures[i][j] -> m_row1);
+                    if(newGame.isCheckmate()) 
+                    {
+                        if(print)newGame.printBoard();
+                        return true;
+                    }
+                }
+            }
+        }
     }
-    if(col - 1 >= 0 && row-1 >= 0)
+    return false;
+}
+
+bool Game::isCheckmateTwoStep() const
+{
+    if(isCheckmate() || isCheckmateOneStep(false)) return false;
+    if(isAttack(getBlackCol() , getBlackRow()))
     {
-        check &= isAttack(col-1 , row-1);
+        return false;
     }
-    if(col - 1 >= 0 && row+1 < 8)
+    for(int i = 0 ; i < 8 ; i++)
     {
-        check &= isAttack(col-1 , row+1);
+        for(int j = 0 ; j < 8 ; j++)
+        {
+            if(m_figures[i][j] && m_figures[i][j]->getColor() == Figure::Color::white)
+            {
+                while(m_figures[i][j] -> nextMove(*this))
+                {
+                    Game newGame(*this);
+                    newGame.m_figures[i][j] = nullptr;
+                    int i1 = (int)m_figures[i][j] -> m_row1;
+                    int j1 = (int)m_figures[i][j] -> m_col1;
+                    switch(m_figures[i][j]->m_name)
+                    {
+                        case Figure::Name::king:
+                            newGame.m_figures[i1][j1] = new King(*((King*)(m_figures[i][j])));
+                            break;
+                        case Figure::Name::queen:
+                            newGame.m_figures[i1][j1] = new Queen(*((Queen*)(m_figures[i][j])));
+                            break;
+                        case Figure::Name::bishop:
+                            newGame.m_figures[i1][j1] = new Bishop(*((Bishop*)(m_figures[i][j])));
+                            break;
+                        case Figure::Name::rook:
+                            newGame.m_figures[i1][j1] = new Rook(*((Rook*)(m_figures[i][j])));
+                            break;
+                        case Figure::Name::knight:
+                            newGame.m_figures[i1][j1] = new Knight(*((Knight*)(m_figures[i][j])));
+                            break;
+                        case Figure::Name::pawn:
+                            newGame.m_figures[i1][j1] = new Pawn(*((Pawn*)(m_figures[i][j])));
+                            break;
+                    }
+                    newGame.m_figures[i1][j1] -> setCol(m_figures[i][j] -> m_col1);
+                    newGame.m_figures[i1][j1] -> setRow(m_figures[i][j] -> m_row1);
+                    newGame.printBoard();
+                    int blackCol = (int)newGame.getBlackCol();
+                    int blackRow = (int)newGame.getBlackRow();
+                    bool check = true;
+                    Game forPrint;
+                    while(m_figures[blackRow][blackCol] -> nextMove(newGame) && check)
+                    {
+                        Game newGame1(newGame);
+                        int blackRow1 = (int)newGame.m_figures[blackRow][blackCol] -> m_row1;
+                        int blackCol1 = (int)m_figures[blackRow][blackCol] -> m_col1;
+                        newGame1.m_figures[blackRow][blackCol] = nullptr;
+                        newGame1.m_figures[blackRow1][blackCol1] = new King(*((King*)(newGame.m_figures[blackRow][blackCol])));
+                        newGame1.m_figures[blackRow1][blackCol1] -> setCol((Figure::Column)blackCol1);
+                        newGame1.m_figures[blackRow1][blackCol1] -> setRow((Figure::Row)blackRow1);
+                        if(!newGame1.isCheckmateOneStep(false))
+                        {
+                            check = false;
+                        }
+                        else
+                        {
+                            forPrint = newGame1;
+                        }
+                    }
+                    if(check)
+                    {
+                        forPrint.isCheckmateOneStep(true);
+                        return true;
+                    }
+                }
+            }
+        }
     }
-    if(row-1 >= 0)
+    return false;
+}
+
+void Game::analizeGame() const
+{
+    if(isCheckmate())
     {
-        check &= isAttack(col , row-1);
+        std::cout << GREEN "Checkmate" RESET<< std::endl;
     }
-    if(row+1 < 8)
+    else if(isCheckmateOneStep(true))
     {
-        check &= isAttack(col , row+1);
+        std::cout << GREEN "Checkmate in one step" RESET<< std::endl;
     }
-    if(col + 1 < 8 && row-1 >= 0)
+    // else if(isCheckmateTwoStep())
+    // {
+    //     std::cout << GREEN "Checkmate in two steps" RESET<< std::endl;   
+    // }
+    else
     {
-        check &= isAttack(col+1 , row-1);
+        std::cout << RED "Not Checkmate" RESET<< std::endl;
     }
-    if(col + 1 < 8)
-    {
-        check &= isAttack(col+1 , row);
-    }
-    if(col + 1 < 8 && row+1 < 8)
-    {
-        check &= isAttack(col+1 , row+1);
-    }
-    return check;
 }

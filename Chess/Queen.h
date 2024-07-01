@@ -8,10 +8,10 @@ class Queen : public Figure
 {
     public:
         Queen();
-        Queen(std::string, bool, char, int);
+        Queen(Color, bool, Column, Row);
         Queen(const Queen&);
-        bool isAttack(char , int , const Board&) const override;
-        void printName() const override;
+        bool isAttack(Column , Row , const Board&) const override;
+        bool nextMove(const Board&) override;
         ~Queen();
         friend class Board;
 };

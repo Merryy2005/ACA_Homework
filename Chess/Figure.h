@@ -4,39 +4,66 @@
 #include <iostream>
 #include <string>
 #include <algorithm>
-#include "Board.h"
+
+#define BLUE "\033[34m"
+#define RESET "\033[0m"
 
 class Board;
 
 class Figure
 {
+    public:
+        enum class Column
+        {
+            A, B, C, D, E, F, G, H
+        };
+        enum class Row
+        {
+            R1, R2, R3, R4, R5, R6, R7, R8 
+        };
+        enum class Color
+        {
+            black, white
+        };
+        enum class Name
+        {
+            king,
+            queen,
+            bishop,
+            knight,
+            rook,
+            pawn
+        };
     protected:
-        std::string m_color;
+        Color m_color;
         bool m_isActive;
-        char m_col; // A-H
-        int m_row; // 1-8
-        int m_point;
+        Column m_col;
+        Row m_row;
+        Column m_col1;
+        Row m_row1;
         bool m_create;
-        std::string m_name;
+        Name m_name;
+        bool** m_wasHere;
+        bool** m_wasHere1;
     public:
         Figure();
-        Figure(std::string, bool, char, int);
-        Figure(std::string, bool, char, int , int);
+        Figure(Color, bool, Column, Row);
         Figure(const Figure&);
         virtual bool isCreated() const;
-        std::string getName() const;
-        char getCol() const;
-        int getRow() const;
-        std::string getColor() const;
+        Name getName() const;
+        Column getCol() const;
+        Row getRow() const;
+        Color getColor() const;
         bool getState() const;
-        int getPoint() const;
-        void setCol(char);
-        void setRow(int);
+        void setCol(Column);
+        void setRow(Row);
         void printParameters() const;
-        virtual bool isAttack(char , int , const Board&) const = 0;
-        virtual void printName() const = 0;
+        virtual void printName() const;
+        virtual bool isAttack(Column, Row, const Board&) const = 0;
+        virtual bool nextMove(const Board&) = 0;
         virtual ~Figure();
         friend class Board;
+        friend class Game;
 };
 
-#endif //FIGURE_H
+#endif // FIGURE_H

@@ -11,14 +11,20 @@
 #include "Queen.h"
 #include "Rook.h"
 
+#define RESET   "\033[0m"
+#define RED     "\033[31m"
+#define GREEN   "\033[32m"
 
 class Game : public Board
 {
     public:
-        bool isAttack(int , int) const;
-        int getBlackCol() const;
-        int getBlackRow() const;
+        Game();
+        Game(const Game&);
+        bool isAttack(Figure::Column , Figure::Row) const;
         bool isCheckmate() const;
+        bool isCheckmateOneStep(bool) const;
+        bool isCheckmateTwoStep() const;
+        void analizeGame() const;
 };
 
 #endif //GAME_H

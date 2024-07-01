@@ -5,15 +5,21 @@
 
 class Matrix
 {
+    public:
+        enum class Color
+        {
+            black,
+            white
+        };
     protected:
-        int** m_ptr;
         int m_row;
         int m_col;
+        Color** m_ptr;
     public:
         Matrix();
-        Matrix(int , int);
+        Matrix(int, int);
         void printMatrix();
         ~Matrix();
 };
 
-#endif //MATRIX_H
+#endif // MATRIX_H

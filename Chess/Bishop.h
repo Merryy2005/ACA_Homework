@@ -8,10 +8,10 @@ class Bishop : public Figure
 {
     public:
         Bishop();
-        Bishop(std::string, bool, char, int);
+        Bishop(Color, bool, Column, Row);
         Bishop(const Bishop&);
-        bool isAttack(char , int , const Board&) const override;
-        void printName() const override;
+        bool isAttack(Column , Row , const Board&) const override;
+        bool nextMove(const Board&) override;
         ~Bishop();
         friend class Board;
 };

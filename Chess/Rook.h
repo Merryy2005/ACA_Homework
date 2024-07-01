@@ -8,11 +8,11 @@ class Rook : public Figure
 {
     public:
         Rook();
-        Rook(std::string, bool, char, int);
+        Rook(Color, bool, Column, Row);
         Rook(const Rook&);
-        bool isAttack(char , int , const Board&) const override;
-        void printName() const override;
+        bool isAttack(Column , Row , const Board&) const override;
         ~Rook();
+        bool nextMove(const Board&) override;
         friend class Board;
 };
 
