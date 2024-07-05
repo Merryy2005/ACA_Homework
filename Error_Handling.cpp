@@ -18,9 +18,9 @@ class A
                     std::terminate(); 
                 }
             }
-             catch(const std::exception& e)
+            catch(const std::exception& e)
             {
-                std::cerr << e.what() << std::endl;
+                std::cout << e.what() << std::endl;
                 std::terminate(); 
             }
         }
