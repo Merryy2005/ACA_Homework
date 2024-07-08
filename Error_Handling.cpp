@@ -10,18 +10,9 @@ class A
         {}
         ~A()
         {
-            try
+            if(a == 0)
             {
-                if(a == 0)
-                {
-                    throw std::runtime_error("Exception found in destructor");
-                    std::terminate(); 
-                }
-            }
-            catch(const std::exception& e)
-            {
-                std::cout << e.what() << std::endl;
-                std::terminate(); 
+                throw std::string("Exception caught"); 
             }
         }
 };
@@ -33,9 +24,9 @@ int main()
         A obj(0);
         A obj1(1);
     }
-    catch (const std::exception& e)
+    catch (const char* s)
     {
-        std::cout << e.what() << std::endl;
+        std::cout << s << std::endl;
     }
     return 0;
 }
