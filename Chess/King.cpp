@@ -37,34 +37,61 @@ bool King::nextMove(const Board& b)
 {
     int colInt = (int)m_col;
     int rowInt = (int)m_row;
-    for(int i = 0 ; i < 8 ; i++)
+    if(b.m_figures[rowInt][colInt] -> getColor() == Figure::Color::white)
     {
-        for(int j = 0 ; j < 8 ; j++)
+        for(int i = 0 ; i < 8 ; i++)
         {
-                if(std::abs(rowInt - i) <= 1 && std::abs(colInt - j) <= 1)
-                {
-                    for(int i1 = 0 ; i1 < 8 ; i1++)
+            for(int j = 0 ; j < 8 ; j++)
+            {
+                    if(std::abs(rowInt - i) <= 1 && std::abs(colInt - j) <= 1)
                     {
-                        for(int j1 = 0 ; j1 < 8 ; j1++)
+                        for(int i1 = 0 ; i1 < 8 ; i1++)
                         {
-                            if(!(i1 == rowInt && j1 == colInt) && std::abs(i1 - i) <= 1 && std::abs(j1 - j) <= 1 && b.m_figures[i1][j1] && b.m_figures[i1][j1]->getName() == Figure::Name::king)
+                            for(int j1 = 0 ; j1 < 8 ; j1++)
                             {
-                                m_wasHere[i][j] = true;
-                                break;
+                                if(!(i1 == rowInt && j1 == colInt) && std::abs(i1 - i) <= 1 && std::abs(j1 - j) <= 1 && b.m_figures[i1][j1] && b.m_figures[i1][j1]->getName() == Figure::Name::king)
+                                {
+                                    m_wasHere[i][j] = true;
+                                    break;
+                                }
                             }
                         }
+                        if(!m_wasHere[i][j])
+                        {
+                            m_wasHere[i][j] = true;
+                            m_col1 = (Figure::Column)j;
+                            m_row1 = (Figure::Row)i;
+                            return true;
+                        }
                     }
-                    if(!m_wasHere[i][j])
-                    {
-                        m_wasHere[i][j] = true;
-                        m_col1 = (Figure::Column)j;
-                        m_row1 = (Figure::Row)i;
-                        return true;
-                    }
-                }
+            }
         }
+        return false;
     }
-    return false;
+    else
+    {
+        for(int i = 0 ; i < 8 ; i++)
+        {
+            for(int j = 0 ; j < 8 ; j++)
+            {
+                    if(std::abs(rowInt - i) <= 1 && std::abs(colInt - j) <= 1)
+                    {
+                        if(b.isAttack((Figure::Column)j,(Figure::Row)i))
+                        {
+                            m_wasHere[i][j] = true;
+                        }
+                        else if(!m_wasHere[i][j])
+                        {
+                            m_wasHere[i][j] = true;
+                            m_col1 = (Figure::Column)j;
+                            m_row1 = (Figure::Row)i;
+                            return true;
+                        }
+                    }
+            }
+        }
+        return false; 
+    }
 }
 
 King::~King()

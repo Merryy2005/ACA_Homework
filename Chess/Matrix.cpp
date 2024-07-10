@@ -20,6 +20,30 @@ Matrix::Matrix(int row , int col) : m_row(row) , m_col(col) , m_ptr(new Color*[r
 
 }
 
+Matrix& Matrix::operator=(const Matrix& other)
+{
+    if (this != &other)
+    {
+        for (int i = 0; i < m_row; ++i)
+        {
+            delete[] m_ptr[i];
+        }
+        delete[] m_ptr;
+        m_row = other.m_row;
+        m_col = other.m_col;
+        m_ptr = new Color*[m_row];
+        for (int i = 0; i < m_row; ++i)
+        {
+            m_ptr[i] = new Color[m_col];
+            for (int j = 0; j < m_col; ++j)
+            {
+                m_ptr[i][j] = other.m_ptr[i][j];
+            }
+        }
+    }
+    return *this;
+}
+
 void Matrix::printMatrix()
 {
     for(int i = 0 ; i < m_row ; i++)

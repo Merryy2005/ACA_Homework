@@ -45,9 +45,10 @@ Figure::Figure(const Figure& other) :
     {
         for(int j = 0 ; j < 8 ; j++)
         {
-            m_wasHere[i][j] = other.m_wasHere[i][j];
+            m_wasHere[i][j] = false;
         }
     }
+    m_wasHere[(int)m_row][(int)m_col] = true;
 }
 
 bool Figure::isCreated() const
@@ -134,10 +135,4 @@ Figure::~Figure()
     }
     delete[] m_wasHere;
     m_wasHere = nullptr;
-    // for(int i = 0 ; i < 8 ; i++)
-    // {
-    //     delete[] m_wasHere1[i];
-    // }
-    // delete[] m_wasHere1;
-    // m_wasHere1 = nullptr;
 }

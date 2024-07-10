@@ -78,7 +78,7 @@ bool Queen::isAttack(Column col, Row row , const Board& b) const
 
 bool Queen::nextMove(const Board& b)
 {
-     int colInt = (int)m_col;
+    int colInt = (int)m_col;
     int rowInt = (int)m_row;
     for(int i = rowInt + 1 , j = colInt + 1; i < 8 && j < 8 ; i++ , j++)
     {

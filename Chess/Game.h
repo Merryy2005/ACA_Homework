@@ -20,7 +20,6 @@ class Game : public Board
     public:
         Game();
         Game(const Game&);
-        bool isAttack(Figure::Column , Figure::Row) const;
         bool isCheckmate() const;
         bool isCheckmateOneStep(bool) const;
         bool isCheckmateTwoStep() const;

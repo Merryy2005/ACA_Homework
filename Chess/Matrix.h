@@ -18,6 +18,7 @@ class Matrix
     public:
         Matrix();
         Matrix(int, int);
+        Matrix& operator=(const Matrix&);
         void printMatrix();
         ~Matrix();
 };

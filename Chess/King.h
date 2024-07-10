@@ -17,7 +17,6 @@ class King : public Figure
         bool nextMove(const Board&) override;
         ~King();
         friend class Board;
-
 };
 
 #endif //KING_H

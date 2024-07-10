@@ -9,6 +9,7 @@
 #define RESET "\033[0m"
 
 class Board;
+class Game;
 
 class Figure
 {
@@ -44,7 +45,6 @@ class Figure
         bool m_create;
         Name m_name;
         bool** m_wasHere;
-        bool** m_wasHere1;
     public:
         Figure();
         Figure(Color, bool, Column, Row);

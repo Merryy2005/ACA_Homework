@@ -31,11 +31,13 @@ class Board : public Matrix
     public:
         Board();
         Board(const Board&);
+        Board& operator=(const Board&); 
         bool isNeighbour(Figure::Column, Figure::Row, Figure::Column, Figure::Row) const;
         bool registerFigure(Figure*);
         void printBoard();
         Figure::Column getBlackCol() const;
         Figure::Row getBlackRow() const;
+        bool isAttack(Figure::Column , Figure::Row) const;
         ~Board();
         friend class King;
         friend class Queen;

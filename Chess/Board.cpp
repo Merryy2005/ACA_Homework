@@ -74,6 +74,59 @@ Board::Board(const Board& other) : Matrix(8,8)
         }
     }
 }
+
+Board& Board::operator=(const Board& other)
+{
+    if (this != &other)
+    {
+        Matrix::operator=(other);
+        for (int i = 0; i < m_row; ++i)
+        {
+            delete[] m_figures[i];
+        }
+        delete[] m_figures;
+        m_row = other.m_row;
+        m_col = other.m_col;
+        m_figures = new Figure**[m_row];
+        for (int i = 0; i < m_row; ++i)
+        {
+            m_figures[i] = new Figure*[m_col];
+            for (int j = 0; j < m_col; ++j)
+            {
+                if (other.m_figures[i][j] == nullptr)
+                {
+                    m_figures[i][j] = nullptr;
+                }
+                else
+                {
+                    switch(other.m_figures[i][j]->m_name)
+                    {
+                        case Figure::Name::king:
+                            m_figures[i][j] = new King(*((King*)(other.m_figures[i][j])));
+                            break;
+                        case Figure::Name::queen:
+                            m_figures[i][j] = new Queen(*((Queen*)(other.m_figures[i][j])));
+                            break;
+                        case Figure::Name::bishop:
+                            m_figures[i][j] = new Bishop(*((Bishop*)(other.m_figures[i][j])));
+                            break;
+                        case Figure::Name::rook:
+                            m_figures[i][j] = new Rook(*((Rook*)(other.m_figures[i][j])));
+                            break;
+                        case Figure::Name::knight:
+                            m_figures[i][j] = new Knight(*((Knight*)(other.m_figures[i][j])));
+                            break;
+                        case Figure::Name::pawn:
+                            m_figures[i][j] = new Pawn(*((Pawn*)(other.m_figures[i][j])));
+                            break;
+                    }
+                }
+            }
+        }
+    }
+    return *this;
+}
+
 bool Board::isNeighbour(Figure::Column col1, Figure::Row row1, Figure::Column col2, Figure::Row row2) const
 {
     if(col1 == col2 && row1 == row2)
@@ -195,6 +248,26 @@ Figure::Row Board::getBlackRow() const
     }
     std::cout <<"No black king found on the board." << std::endl;
     return Figure::Row::R1;
+}
+
+bool Board::isAttack(Figure::Column col , Figure::Row row) const
+{
+    bool check = false;
+    for(int i = 0 ; i < m_row ; i++)
+    {
+        for(int j = 0 ; j < m_col ; j++)
+        {
+            if(m_figures[i][j] && m_figures[i][j]->getColor() == Figure::Color::black)
+            {
+                continue;
+            }
+            else if(m_figures[i][j])
+            {
+                check |= m_figures[i][j] -> isAttack(col , row , *this);
+            }
+        }
+    }
+    return check;
 }
 
 Board::~Board() 

@@ -10,26 +10,6 @@ Game::Game(const Game& other) : Board(other)
 
 }
 
-bool Game::isAttack(Figure::Column col , Figure::Row row) const
-{
-    bool check = false;
-    for(int i = 0 ; i < m_row ; i++)
-    {
-        for(int j = 0 ; j < m_col ; j++)
-        {
-            if(m_figures[i][j] && m_figures[i][j]->getColor() == Figure::Color::black)
-            {
-                continue;
-            }
-            else if(m_figures[i][j])
-            {
-                check |= m_figures[i][j] -> isAttack(col , row , *this);
-            }
-        }
-    }
-    return check;
-}
-
 bool Game::isCheckmate() const
 {
     Figure::Column col = getBlackCol();
@@ -134,67 +114,71 @@ bool Game::isCheckmateTwoStep() const
     {
         return false;
     }
+    Game newGame(*this);
     for(int i = 0 ; i < 8 ; i++)
     {
         for(int j = 0 ; j < 8 ; j++)
         {
-            if(m_figures[i][j] && m_figures[i][j]->getColor() == Figure::Color::white)
+            if(newGame.m_figures[i][j] && newGame.m_figures[i][j]->getColor() == Figure::Color::white)
             {
-                while(m_figures[i][j] -> nextMove(*this))
+                while(newGame.m_figures[i][j] -> nextMove(newGame))
                 {
-                    Game newGame(*this);
-                    newGame.m_figures[i][j] = nullptr;
-                    int i1 = (int)m_figures[i][j] -> m_row1;
-                    int j1 = (int)m_figures[i][j] -> m_col1;
-                    switch(m_figures[i][j]->m_name)
+                    Game newGame1(newGame);
+                    newGame1.m_figures[i][j] = nullptr;
+                    int i1 = (int)newGame.m_figures[i][j] -> m_row1;
+                    int j1 = (int)newGame.m_figures[i][j] -> m_col1;
+                    switch(newGame.m_figures[i][j]->m_name)
                     {
                         case Figure::Name::king:
-                            newGame.m_figures[i1][j1] = new King(*((King*)(m_figures[i][j])));
+                            newGame1.m_figures[i1][j1] = new King(*((King*)(newGame.m_figures[i][j])));
                             break;
                         case Figure::Name::queen:
-                            newGame.m_figures[i1][j1] = new Queen(*((Queen*)(m_figures[i][j])));
+                            newGame1.m_figures[i1][j1] = new Queen(*((Queen*)(newGame.m_figures[i][j])));
                             break;
                         case Figure::Name::bishop:
-                            newGame.m_figures[i1][j1] = new Bishop(*((Bishop*)(m_figures[i][j])));
+                            newGame1.m_figures[i1][j1] = new Bishop(*((Bishop*)(newGame.m_figures[i][j])));
                             break;
                         case Figure::Name::rook:
-                            newGame.m_figures[i1][j1] = new Rook(*((Rook*)(m_figures[i][j])));
+                            newGame1.m_figures[i1][j1] = new Rook(*((Rook*)(newGame.m_figures[i][j])));
                             break;
                         case Figure::Name::knight:
-                            newGame.m_figures[i1][j1] = new Knight(*((Knight*)(m_figures[i][j])));
+                            newGame1.m_figures[i1][j1] = new Knight(*((Knight*)(newGame.m_figures[i][j])));
                             break;
                         case Figure::Name::pawn:
-                            newGame.m_figures[i1][j1] = new Pawn(*((Pawn*)(m_figures[i][j])));
+                            newGame1.m_figures[i1][j1] = new Pawn(*((Pawn*)(newGame.m_figures[i][j])));
                             break;
                     }
-                    newGame.m_figures[i1][j1] -> setCol(m_figures[i][j] -> m_col1);
-                    newGame.m_figures[i1][j1] -> setRow(m_figures[i][j] -> m_row1);
-                    newGame.printBoard();
-                    int blackCol = (int)newGame.getBlackCol();
-                    int blackRow = (int)newGame.getBlackRow();
+                    newGame1.m_figures[i1][j1] -> setCol(newGame.m_figures[i][j] -> m_col1);
+                    newGame1.m_figures[i1][j1] -> setRow(newGame.m_figures[i][j] -> m_row1);
+                    int blackCol = (int)newGame1.getBlackCol();
+                    int blackRow = (int)newGame1.getBlackRow();
                     bool check = true;
-                    Game forPrint;
-                    while(m_figures[blackRow][blackCol] -> nextMove(newGame) && check)
+                    int cnt = 0;
+                    Game forprint;
+                    while(newGame1.m_figures[blackRow][blackCol] -> nextMove(newGame1) && check)
                     {
-                        Game newGame1(newGame);
-                        int blackRow1 = (int)newGame.m_figures[blackRow][blackCol] -> m_row1;
-                        int blackCol1 = (int)m_figures[blackRow][blackCol] -> m_col1;
-                        newGame1.m_figures[blackRow][blackCol] = nullptr;
-                        newGame1.m_figures[blackRow1][blackCol1] = new King(*((King*)(newGame.m_figures[blackRow][blackCol])));
-                        newGame1.m_figures[blackRow1][blackCol1] -> setCol((Figure::Column)blackCol1);
-                        newGame1.m_figures[blackRow1][blackCol1] -> setRow((Figure::Row)blackRow1);
-                        if(!newGame1.isCheckmateOneStep(false))
+                        cnt++;
+                        Game newGame2(newGame1);
+                        int blackRow2 = (int)newGame1.m_figures[blackRow][blackCol] -> m_row1;
+                        int blackCol2 = (int)newGame1.m_figures[blackRow][blackCol] -> m_col1;
+                        newGame2.m_figures[blackRow][blackCol] = nullptr;
+                        newGame2.m_figures[blackRow2][blackCol2] = new King(*((King*)(newGame1.m_figures[blackRow][blackCol])));
+                        newGame2.m_figures[blackRow2][blackCol2] -> setCol((Figure::Column)blackCol2);
+                        newGame2.m_figures[blackRow2][blackCol2] -> setRow((Figure::Row)blackRow2);
+                        if(!newGame2.isCheckmateOneStep(false))
                         {
                             check = false;
                         }
                         else
                         {
-                            forPrint = newGame1;
+                            forprint = newGame2;
                         }
                     }
-                    if(check)
+                    if(check && cnt)
                     {
-                        forPrint.isCheckmateOneStep(true);
+                        newGame1.printBoard();
+                        forprint.printBoard();
+                        forprint.isCheckmateOneStep(true);
                         return true;
                     }
                 }
@@ -214,10 +198,10 @@ void Game::analizeGame() const
     {
         std::cout << GREEN "Checkmate in one step" RESET<< std::endl;
     }
-    // else if(isCheckmateTwoStep())
-    // {
-    //     std::cout << GREEN "Checkmate in two steps" RESET<< std::endl;   
-    // }
+    else if(isCheckmateTwoStep())
+    {
+        std::cout << GREEN "Checkmate in two steps" RESET<< std::endl;   
+    }
     else
     {
         std::cout << RED "Not Checkmate" RESET<< std::endl;
