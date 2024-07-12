@@ -37,24 +37,13 @@ bool Pawn::nextMove(const Board& b)
 {
     int colInt = (int)m_col;
     int rowInt = (int)m_row;
-    rowInt++;
-    if(colInt - 1 >= 0)
+    if(rowInt + 1 < 8)
     { 
-        if(!m_wasHere[rowInt][colInt-1])
+        if(!m_wasHere[rowInt+1][colInt] && !b.m_figures[rowInt+1][colInt])
         {
-            m_wasHere[rowInt][colInt-1] = true;
-            m_col1 = (Figure::Column)(colInt - 1);
-            m_row1 = (Figure::Row)rowInt;
-            return true;
-        }
-    }
-    if(colInt + 1 < 8)
-    {
-        if(!m_wasHere[rowInt][colInt+1])
-        {
-            m_wasHere[rowInt][colInt+1] = true;
-            m_col1 = (Figure::Column)(colInt + 1);
-            m_row1 = (Figure::Row)rowInt;
+            m_wasHere[rowInt+1][colInt] = true;
+            m_col1 = (Figure::Column)(colInt);
+            m_row1 = (Figure::Row)(rowInt+1);
             return true;
         }
     }

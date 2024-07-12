@@ -159,8 +159,8 @@ bool Game::isCheckmateTwoStep() const
                     {
                         cnt++;
                         Game newGame2(newGame1);
-                        int blackRow2 = (int)newGame1.m_figures[blackRow][blackCol] -> m_row1;
-                        int blackCol2 = (int)newGame1.m_figures[blackRow][blackCol] -> m_col1;
+                        int blackRow2 = (int)newGame2.m_figures[blackRow][blackCol] -> m_row1;
+                        int blackCol2 = (int)newGame2.m_figures[blackRow][blackCol] -> m_col1;
                         newGame2.m_figures[blackRow][blackCol] = nullptr;
                         newGame2.m_figures[blackRow2][blackCol2] = new King(*((King*)(newGame1.m_figures[blackRow][blackCol])));
                         newGame2.m_figures[blackRow2][blackCol2] -> setCol((Figure::Column)blackCol2);

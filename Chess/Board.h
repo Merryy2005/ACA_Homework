@@ -34,7 +34,7 @@ class Board : public Matrix
         Board& operator=(const Board&); 
         bool isNeighbour(Figure::Column, Figure::Row, Figure::Column, Figure::Row) const;
         bool registerFigure(Figure*);
-        void printBoard();
+        void printBoard() const;
         Figure::Column getBlackCol() const;
         Figure::Row getBlackRow() const;
         bool isAttack(Figure::Column , Figure::Row) const;

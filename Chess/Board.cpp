@@ -190,7 +190,7 @@ bool Board::registerFigure(Figure* f)
     return bRes;
 }
 
-void Board::printBoard()
+void Board::printBoard() const
 {
     for(int i = m_row-1 ; i >= 0 ; i--)
     {
@@ -217,6 +217,7 @@ void Board::printBoard()
     std::cout << std::endl;
     return;
 }
+
 
 Figure::Column Board::getBlackCol() const
 {
@@ -246,7 +247,6 @@ Figure::Row Board::getBlackRow() const
             }
         }
     }
-    std::cout <<"No black king found on the board." << std::endl;
     return Figure::Row::R1;
 }
 
