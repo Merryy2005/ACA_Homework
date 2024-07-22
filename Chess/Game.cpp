@@ -190,20 +190,23 @@ bool Game::isCheckmateTwoStep() const
 
 void Game::analizeGame() const
 {
-    if(isCheckmate())
+    if(checkBoard())
     {
-        std::cout << GREEN "Checkmate" RESET<< std::endl;
-    }
-    else if(isCheckmateOneStep(true))
-    {
-        std::cout << GREEN "Checkmate in one step" RESET<< std::endl;
-    }
-    else if(isCheckmateTwoStep())
-    {
-        std::cout << GREEN "Checkmate in two steps" RESET<< std::endl;   
-    }
-    else
-    {
-        std::cout << RED "Not Checkmate" RESET<< std::endl;
+        if(isCheckmate())
+        {
+            std::cout << GREEN "Checkmate" RESET<< std::endl;
+        }
+        else if(isCheckmateOneStep(true))
+        {
+            std::cout << GREEN "Checkmate in one step" RESET<< std::endl;
+        }
+        else if(isCheckmateTwoStep())
+        {
+            std::cout << GREEN "Checkmate in two steps" RESET<< std::endl;   
+        }
+        else
+        {
+            std::cout << RED "Not Checkmate" RESET<< std::endl;
+        }
     }
 }

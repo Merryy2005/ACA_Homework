@@ -190,6 +190,32 @@ bool Board::registerFigure(Figure* f)
     return bRes;
 }
 
+bool Board::checkBoard() const
+{
+    int cnt = 0;
+    int cnt1 = 0;
+    for(int i = m_row-1 ; i >= 0 ; i--)
+    {
+        for(int j = 0 ; j < m_col ; j++)
+        {
+            if(m_figures[i][j] && m_figures[i][j]->getColor() == Figure::Color::white && m_figures[i][j] -> getName() == Figure::Name::king)
+            {
+                cnt++;
+            }
+            if(m_figures[i][j] && m_figures[i][j]->getColor() == Figure::Color::black && m_figures[i][j] -> getName() == Figure::Name::king)
+            {
+                cnt1++;
+            }
+        }
+    }
+    if(!(cnt == 1 && cnt1 == 1))
+    {
+        std::cout << "Wrong number of kings" << std::endl;
+        return false;
+    }
+    return true;
+}
+
 void Board::printBoard() const
 {
     for(int i = m_row-1 ; i >= 0 ; i--)
@@ -231,7 +257,6 @@ Figure::Column Board::getBlackCol() const
             }
         }
     }
-    std::cout <<"No black king found on the board." << std::endl;
     return Figure::Column::A;
 }
 
