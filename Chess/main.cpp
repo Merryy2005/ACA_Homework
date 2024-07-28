@@ -733,9 +733,9 @@ int main()
     // figures1[0] = new King(Figure::Color::black, true, Figure::Column::A, Figure::Row::R7);
     // figures1[1] = new Rook(Figure::Color::white, true, Figure::Column::B, Figure::Row::R4);
     // figures1[2] = new Rook(Figure::Color::white, true, Figure::Column::E, Figure::Row::R6);
-    // // figures1[3] = new King(Figure::Color::white, true, Figure::Column::C, Figure::Row::R6);
+    // figures1[3] = new King(Figure::Color::white, true, Figure::Column::A, Figure::Row::R1);
     // // figures1[4] = new Bishop(Figure::Color::white, true, Figure::Column::H, Figure::Row::R1);
-    // for (int i = 3; i < 32; ++i) {
+    // for (int i = 4; i < 32; ++i) {
     //     figures1[i] = nullptr;
     // }
     // for (int i = 0; i < 32; ++i) {
@@ -841,7 +841,7 @@ int main()
     // figures1 = nullptr;
     // std::cout << "---------------" << std::endl;
     // std::cout << std::endl;
-    //  Game one_game1;
+    // Game one_game1;
     // Figure** figures1 = new Figure*[32];
     // figures1[0] = new King(Figure::Color::black, true, Figure::Column::A, Figure::Row::R8);
     // figures1[1] = new Rook(Figure::Color::white, true, Figure::Column::B, Figure::Row::R6);
