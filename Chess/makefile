@@ -8,7 +8,7 @@ CXXFLAGS = -Wall
 TARGET = a
 
 # Define source files
-SRCS = main.cpp Figure.cpp King.cpp Queen.cpp Rook.cpp Bishop.cpp Knight.cpp Pawn.cpp Matrix.cpp Board.cpp Game.cpp 
+SRCS = main.cpp Figure.cpp King.cpp Queen.cpp Rook.cpp Bishop.cpp Knight.cpp Pawn.cpp Matrix.cpp Board.cpp Game.cpp
 
 # Define object files
 OBJS = $(SRCS:.cpp=.o)

@@ -897,14 +897,43 @@ int main()
     // figures1 = nullptr;
     // std::cout << "----------------" << std::endl;
     // std::cout << std::endl;
+    // Game one_game1;
+    // Figure** figures1 = new Figure*[32];
+    // figures1[0] = new King(Figure::Color::black, true, Figure::Column::H, Figure::Row::R8);
+    // figures1[1] = new Pawn(Figure::Color::white, true, Figure::Column::G, Figure::Row::R6);
+    // figures1[2] = new Knight(Figure::Color::white, true, Figure::Column::E, Figure::Row::R7);
+    // figures1[3] = new Knight(Figure::Color::white, true, Figure::Column::F, Figure::Row::R5);
+    // figures1[4] = new Bishop(Figure::Color::white, true, Figure::Column::D, Figure::Row::R5);
+    // figures1[5] = new King(Figure::Color::white, true, Figure::Column::A, Figure::Row::R1);
+    // for (int i = 6; i < 32; ++i) {
+    //     figures1[i] = nullptr;
+    // }
+    // for (int i = 0; i < 32; ++i) {
+    //     if (figures1[i] != nullptr) {
+    //         if (!one_game1.registerFigure(figures1[i])) {
+    //             std::cout << "Couldn't create" << std::endl;
+    //             return -1;
+    //         }
+    //     }
+    // }
+    // one_game1.printBoard();
+    // one_game1.analizeGame();
+    // for (int i = 0; i < 32; i++) {
+    //     delete figures1[i];
+    //     figures1[i] = nullptr;
+    // }
+    // delete[] figures1;
+    // figures1 = nullptr;
+    // std::cout << "----------------" << std::endl;
+    // std::cout << std::endl;
     Game one_game1;
     Figure** figures1 = new Figure*[32];
-    figures1[0] = new King(Figure::Color::black, true, Figure::Column::H, Figure::Row::R8);
-    figures1[1] = new Pawn(Figure::Color::white, true, Figure::Column::G, Figure::Row::R6);
-    figures1[2] = new Knight(Figure::Color::white, true, Figure::Column::E, Figure::Row::R7);
-    figures1[3] = new Knight(Figure::Color::white, true, Figure::Column::F, Figure::Row::R5);
-    figures1[4] = new Bishop(Figure::Color::white, true, Figure::Column::D, Figure::Row::R5);
-    figures1[5] = new King(Figure::Color::white, true, Figure::Column::A, Figure::Row::R1);
+    figures1[0] = new King(Figure::Color::black, true, Figure::Column::A, Figure::Row::R8);
+    figures1[1] = new Rook(Figure::Color::white, true, Figure::Column::A, Figure::Row::R1);
+    figures1[2] = new King(Figure::Color::white, true, Figure::Column::C, Figure::Row::R8);
+    figures1[3] = new Bishop(Figure::Color::white, true, Figure::Column::D, Figure::Row::R4);
+    figures1[4] = new Pawn(Figure::Color::black, true, Figure::Column::A, Figure::Row::R7);
+    figures1[5] = new Knight(Figure::Color::black, true, Figure::Column::A, Figure::Row::R6);
     for (int i = 6; i < 32; ++i) {
         figures1[i] = nullptr;
     }

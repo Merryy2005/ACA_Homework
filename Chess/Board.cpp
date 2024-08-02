@@ -225,11 +225,12 @@ void Board::printBoard() const
         {
             if(m_figures[i][j])
             {
-                m_figures[i][j]->printName();
+                m_figures[i][j]->printName() ;
+                std::cout << " ";
             }
             else
             {
-                std::cout << ".";
+                std::cout << ". ";
             }
         }
         std::cout << std::endl;
@@ -237,7 +238,7 @@ void Board::printBoard() const
     std::cout << " ";
     for(int j = 0 ; j < m_col ; j++)
     {
-        std::cout << CYAN << (char)('A' + j) << RESET;
+        std::cout << CYAN << (char)('A' + j) << " " << RESET;
     }
     std::cout << std::endl;
     std::cout << std::endl;
